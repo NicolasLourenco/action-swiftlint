@@ -22,4 +22,6 @@ then
 	fi
 fi
 
-set -o pipefail && swiftlint "$@" -- $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands
+set -o pipefail && swiftlint "$@" --reporter json -- $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands | tee lint_result.json 
+lint_result=`cat lint_result.json`
+echo "::set-output name=lint_result::$lint_result"
